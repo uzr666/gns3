@@ -1,0 +1,70 @@
+deux interfaces :
+- ajouter sur gns -> supprimer le cable, eteindre la vm, configure, 2 interfaces
+- ajouter sur VB
+
+
+
+mettre a jour rocky :
+- sudo dnf check-update
+- sudo dnf upgrade
+
+
+
+ajouter une interface au routeur :
+- conf -> slots
+- ajouter "PA-2FE-TX"
+
+
+
+# configurer le nom :
+hostname r1
+ip domain-name tp1.efrei
+
+
+
+
+# installer ubridge :
+sudo apt install git make gcc libpcap-dev
+git clone https://github.com/GNS3/ubridge.git
+cd ubridge
+make
+sudo make install
+
+
+
+# ajouter une interface 
+sudo nmcli connection add type ethernet ifname enp0s8 con-name enp0s8
+sudo nmcli connection up enp0s8
+
+
+# dhcp sur vpcs
+ip dhcp
+
+
+
+# filtres wireshark
+arp or dhcp
+
+
+erreur :
+- %CDP-4-DUPLEX_MISMATCH: duplex mmismatch discovered on Ethernet1/0 (no duplex), with R1 FastEthernet0/0 (half duplex)
+-> sur core1:
+conf t
+interface Ethernet1/0
+ duplex full
+ no shutdown
+end
+write memorys
+-> sur r1:
+conf t
+interface FastEthernet0/0
+ duplex full
+ no shutdown
+end
+write memory
+
+
+
+- connexion foirée :
+-> détecter jusqu'où vont les paquets et où ca bloque avec wireshark
+-> les cables peuvent planter, faut supp et remettre

@@ -1,0 +1,41 @@
+# Configure l'IP statique (remplace NOM_CONN, IP, et PASSERELLE)
+nmcli connection modify "enp0s3" \
+  ipv4.method manual \
+  ipv4.addresses "10.1.30.1/24" \
+  ipv4.gateway "10.1.30.254" \
+  ipv4.dns "8.8.8.8"
+
+nmcli connection up "enp0s3"
+
+
+
+
+# le dhcp
+- sudo dnf install nano dnsmasq -y
+- sudo mv /etc/dnsmasq.conf /detc/dnsmasq.conf.bak
+- sudo nano /etc/dnsmasq.conf :
+
+interface=enp0s3
+dhcp-authoritative
+dhcp-option=option:dns-server,1.1.1.1
+
+# admins (vlan 10)
+dhcp-range=set:vlan10,10.1.10.10,10.1.10.100,255.255.255.0,12h
+dhcp-option=tag:vlan10,option:router,10.1.10.254
+
+# clients (vlan 20)
+dhcp-range=set:vlan20,10.1.20.10,10.1.20.100,255.255.255.0,12h
+dhcp-option=tag:vlan20,option:router,10.1.20.254
+
+# guests (vlan 40)
+dhcp-range=set:vlan40,10.1.40.10,10.1.40.100,255.255.255.0,12h
+dhcp-option=tag:vlan40,option:router,10.1.40.254
+
+
+
+# tout activer
+sudo firewall-cmd --permanent --add-service=dhcp
+sudo firewall-cmd --reload
+sudo systemctl enable dnsmasq
+sudo systemctl start dnsmasq
+sudo systemctl status dnsmasq

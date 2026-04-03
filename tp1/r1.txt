@@ -1,0 +1,87 @@
+conf t
+
+interface Ethernet0/0
+ no ip address
+ no shutdown
+
+# vlan 10
+interface Ethernet0/0.10
+ encapsulation dot1Q 10
+ ip address 10.1.10.254 255.255.255.0
+ ip nat inside
+ no shutdown
+
+# vlan 20
+interface Ethernet0/0.20
+ encapsulation dot1Q 20
+ ip address 10.1.20.254 255.255.255.0
+ ip nat inside
+ no shutdown
+
+# vlan 30
+interface Ethernet0/0.30
+ encapsulation dot1Q 30
+ ip address 10.1.30.254 255.255.255.0
+ ip nat inside
+ no shutdown
+
+# vlan 40
+interface Ethernet0/0.40
+ encapsulation dot1Q 40
+ ip address 10.1.40.254 255.255.255.0
+ ip nat inside
+ no shutdown
+
+# NAT
+interface FastEthernet1/0
+  ip nat outside
+  no shutdown
+  exit
+
+access-list 1 permit 10.1.0.0 0.0.255.255
+ip nat inside source list 1 interface FastEthernet1/0 overload
+
+hostname r1
+ip domain-name tp1.efrei
+
+end
+write memory
+
+
+
+# interface en dhcp
+enable
+configure terminal
+interface FastEthernet1/0
+ip address dhcp
+no shutdown
+exit
+
+
+
+# verifier
+show ip interface brief
+show running-config | section interface
+
+
+
+
+# erreur : pas d'attribution d ip en dhcp
+supprimer le nuage nat et le remettre
+
+
+
+# activer le dhcp relay
+conf t
+
+interface FastEthernet0/0.10
+ ip helper-address 10.1.30.1
+
+interface FastEthernet0/0.20
+ ip helper-address 10.1.30.1
+
+interface FastEthernet0/0.40
+ ip helper-address 10.1.30.1
+
+end
+write memory

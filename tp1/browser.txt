@@ -1,0 +1,12 @@
+# Configure l'IP statique (remplace NOM_CONN, IP, et PASSERELLE)
+nmcli connection modify "enp0s3" \
+  ipv4.method manual \
+  ipv4.addresses "10.1.10.1/24" \
+  ipv4.gateway "10.1.10.254" \
+  ipv4.dns "8.8.8.8"
+
+nmcli connection up "enp0s3"
+
+
+# ajouter une interface :
+sudo nmcli connection add type ethernet ifname enp0s3 con-name enp0s3

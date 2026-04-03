@@ -1,0 +1,42 @@
+conf t
+
+! Création des VLANs (à faire sur TOUS les switches)
+vlan 10
+ name VLAN10
+vlan 20
+ name VLAN20
+vlan 30
+ name VLAN30
+vlan 40
+ name VLAN40
+exit
+
+! === PORT TRUNK ===
+! (vers le routeur ou vers un autre switch)
+interface Ethernet0/0
+ switchport trunk encapsulation dot1q
+ switchport mode trunk
+ switchport trunk allowed vlan 10,20,30,40
+ no shutdown
+
+! === PORTS ACCESS ===
+! Exemple : port vers un hôte du VLAN 20
+interface Ethernet0/1
+ switchport mode access
+ switchport access vlan 20
+ no shutdown
+
+! Exemple : port vers un hôte du VLAN 10
+interface Ethernet0/2
+ switchport mode access
+ switchport access vlan 10
+ no shutdown
+
+end
+write memory
+
+
+
+show vlan brief
+show interfaces trunk
+show running-config
