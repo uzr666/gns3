@@ -1,0 +1,7 @@
+# course dhcp
+- clear la table arp du legitime :
+sudo systemctl stop dnsmasq
+sudo truncate -s 0 /var/lib/dnsmasq/dnsmasq.leases
+sudo systemctl start dnsmasq
+- le ralentir :
+sudo hping3 -2 -p 67 --fast 10.1.30.1

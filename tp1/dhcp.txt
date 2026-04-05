@@ -12,7 +12,7 @@ nmcli connection up "enp0s3"
 
 # le dhcp
 - sudo dnf install nano dnsmasq -y
-- sudo mv /etc/dnsmasq.conf /detc/dnsmasq.conf.bak
+- sudo mv /etc/dnsmasq.conf /etc/dnsmasq.conf.bak
 - sudo nano /etc/dnsmasq.conf :
 
 interface=enp0s3
