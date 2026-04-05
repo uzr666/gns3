@@ -19,7 +19,7 @@ sudo nmcli connection up gns3
 # rog dhcp
 - sudo apt install dnsmasq -y
 - sudo nano /etc/dnsmasq.conf :
-interface=enp0s3
+interface=eth0
 dhcp-authoritative
 port=0
 
