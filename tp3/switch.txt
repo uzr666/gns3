@@ -1,0 +1,15 @@
+
+conf t
+
+ip dhcp snooping
+ip dhcp snooping vlan 10,20,30,40
+no ip dhcp snooping information option # sinon ca beug avec le dhcp relay du routeur
+
+# interfaces trust
+interface Ethernet0/0
+ ip dhcp snooping trust
+
+# les autres interfaces sont pas trust par defaut
+
+end
+write memory
